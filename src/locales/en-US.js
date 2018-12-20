@@ -17,6 +17,7 @@ export default {
   'layout.user.link.terms': 'Terms',
   'app.home.introduce': 'introduce',
   'app.forms.basic.title': 'Basic form',
+  'menu.insurer': 'Insurers',
   'app.forms.basic.description':
     'Form pages are used to collect or verify information to users, and basic forms are common in scenarios where there are fewer data items.',
   ...analysis,

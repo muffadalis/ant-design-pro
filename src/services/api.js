@@ -59,7 +59,7 @@ export async function queryTags() {
 }
 
 export async function queryBasicProfile() {
-  return request('/api/profile/basic');
+  return request('/server/api/profile/basic');
 }
 
 export async function queryAdvancedProfile() {

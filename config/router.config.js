@@ -20,6 +20,12 @@ export default [
       // dashboard
       { path: '/', redirect: '/dashboard/analysis' },
       {
+        path: 'insurer',
+        name: 'Insurers',
+        icon: 'bank',
+        component: './Insurer/List',
+      },
+      {
         path: '/dashboard',
         name: 'dashboard',
         icon: 'dashboard',

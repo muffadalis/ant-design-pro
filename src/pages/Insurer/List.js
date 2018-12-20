@@ -24,7 +24,7 @@ import {
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import Result from '@/components/Result';
 
-import styles from './BasicList.less';
+import styles from './List.less';
 
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
@@ -331,7 +331,7 @@ class BasicList extends PureComponent {
           </Card>
         </div>
         <Modal
-          title={done ? null : `任务${current ? '编辑' : '添加'}`}
+          title={done ? null : `Task${current ? 'Edit' : 'Add to'}`}
           className={styles.standardListForm}
           width={640}
           bodyStyle={done ? { padding: '72px 0' } : { padding: '28px 0 0' }}

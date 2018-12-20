@@ -1,4 +1,5 @@
 export default {
+  'menu.Insurers': 'Insurers',
   'menu.home': 'Home',
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.analysis': 'Analysis',
