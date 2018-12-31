@@ -16,17 +16,19 @@ import {
   Menu,
   Avatar,
   Modal,
-  Form,
+  //Form,
   DatePicker,
   Select,
 } from 'antd';
+
+import { Form } from 'react-formio';
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import Result from '@/components/Result';
 
 import styles from './List.less';
 
-const FormItem = Form.Item;
+//const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const SelectOption = Select.Option;
@@ -36,7 +38,7 @@ const { Search, TextArea } = Input;
   list,
   loading: loading.models.list,
 }))
-@Form.create()
+//@Form.create()
 class BasicList extends PureComponent {
   state = { visible: false, done: false };
 
@@ -116,9 +118,9 @@ class BasicList extends PureComponent {
       list: { list },
       loading,
     } = this.props;
-    const {
-      form: { getFieldDecorator },
-    } = this.props;
+    // const {
+    //   form: { getFieldDecorator },
+    // } = this.props;
     const { visible, done, current = {} } = this.state;
 
     const editAndDelete = (key, currentItem) => {
@@ -199,6 +201,51 @@ class BasicList extends PureComponent {
       </Dropdown>
     );
 
+    const formControls =
+    {
+      "components": [
+        {
+          "input": true,
+          "inputType": "text",
+          "label": "Code",
+          "key": "code",
+          "placeholder": "Enter insurer code",
+          "type": "textfield"
+        },
+        {
+          "input": true,
+          "inputType": "text",
+          "label": "Name",
+          "key": "name",
+          "placeholder": "Enter insurer name",
+          "type": "textfield"
+        },
+        {
+          "input": true,
+          "inputType": "checkbox",
+          "label": "Is Active",
+          "datagridLabel": true,
+          "key": "isActive",
+          "defaultValue": "true",
+          "validate": {
+            "required": false
+          },
+          "type": "checkbox"
+        },
+        {
+          "input": true,
+          "tableView": true,
+          "inputMask": "",
+          "inputType": "hidden",
+          "key": "id",
+          "type": "hidden"
+        }
+      ],
+      "display": "form",
+      "action": "/api/insurer", 
+      "page": 0
+    };
+
     const getModalContent = () => {
       if (done) {
         return (
@@ -216,49 +263,50 @@ class BasicList extends PureComponent {
         );
       }
       return (
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem label="Mission name" {...this.formLayout}>
-            {getFieldDecorator('title', {
-              rules: [{ required: true, message: 'Please enter task name' }],
-              initialValue: current.title,
-            })(<Input placeholder="Please enter" />)}
-          </FormItem>
-          <FormItem label="Starting time" {...this.formLayout}>
-            {getFieldDecorator('createdAt', {
-              rules: [{ required: true, message: 'Please select start time' }],
-              initialValue: current.createdAt ? moment(current.createdAt) : null,
-            })(
-              <DatePicker
-                showTime
-                placeholder="Please choose"
-                format="YYYY-MM-DD HH:mm:ss"
-                style={{ width: '100%' }}
-              />
-            )}
-          </FormItem>
-          <FormItem label="Task owner" {...this.formLayout}>
-            {getFieldDecorator('owner', {
-              rules: [{ required: true, message: 'Please enter task owner' }],
-              initialValue: current.owner,
-            })(
-              <Select placeholder="Please choose">
-                <SelectOption value="Manager 1">Manager 1</SelectOption>
-                <SelectOption value="Manager 2">Manager 2</SelectOption>
-              </Select>
-            )}
-          </FormItem>
-          <FormItem {...this.formLayout} label="Product description">
-            {getFieldDecorator('subDescription', {
-              rules: [
-                {
-                  message: 'Please enter a product description of at least five characters！',
-                  min: 5,
-                },
-              ],
-              initialValue: current.subDescription,
-            })(<TextArea rows={4} placeholder="Please enter at least five characters" />)}
-          </FormItem>
-        </Form>
+        <Form form={formControls} />
+        // <Form onSubmit={this.handleSubmit}>
+        //   <FormItem label="Mission name" {...this.formLayout}>
+        //     {getFieldDecorator('title', {
+        //       rules: [{ required: true, message: 'Please enter task name' }],
+        //       initialValue: current.title,
+        //     })(<Input placeholder="Please enter" />)}
+        //   </FormItem>
+        //   <FormItem label="Starting time" {...this.formLayout}>
+        //     {getFieldDecorator('createdAt', {
+        //       rules: [{ required: true, message: 'Please select start time' }],
+        //       initialValue: current.createdAt ? moment(current.createdAt) : null,
+        //     })(
+        //       <DatePicker
+        //         showTime
+        //         placeholder="Please choose"
+        //         format="YYYY-MM-DD HH:mm:ss"
+        //         style={{ width: '100%' }}
+        //       />
+        //     )}
+        //   </FormItem>
+        //   <FormItem label="Task owner" {...this.formLayout}>
+        //     {getFieldDecorator('owner', {
+        //       rules: [{ required: true, message: 'Please enter task owner' }],
+        //       initialValue: current.owner,
+        //     })(
+        //       <Select placeholder="Please choose">
+        //         <SelectOption value="Manager 1">Manager 1</SelectOption>
+        //         <SelectOption value="Manager 2">Manager 2</SelectOption>
+        //       </Select>
+        //     )}
+        //   </FormItem>
+        //   <FormItem {...this.formLayout} label="Product description">
+        //     {getFieldDecorator('subDescription', {
+        //       rules: [
+        //         {
+        //           message: 'Please enter a product description of at least five characters！',
+        //           min: 5,
+        //         },
+        //       ],
+        //       initialValue: current.subDescription,
+        //     })(<TextArea rows={4} placeholder="Please enter at least five characters" />)}
+        //   </FormItem>
+        // </Form>
       );
     };
     return (
@@ -334,7 +382,6 @@ class BasicList extends PureComponent {
           title={done ? null : `Task${current ? 'Edit' : 'Add to'}`}
           className={styles.standardListForm}
           width={640}
-          bodyStyle={done ? { padding: '72px 0' } : { padding: '28px 0 0' }}
           destroyOnClose
           visible={visible}
           {...modalFooter}
