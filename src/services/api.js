@@ -70,6 +70,17 @@ export async function queryFakeList(params) {
   return request(`/api/fake_list?${stringify(params)}`);
 }
 
+export async function queryInsurerList(params) {
+  return request(`/api/insurers?${stringify(params)}`);
+}
+
+export async function saveInsurer(params) {
+  return request(`/api/insurers`, {
+    method: 'POST',
+    body: params
+  });
+}
+
 export async function removeFakeList(params) {
   const { count = 5, ...restParams } = params;
   return request(`/api/fake_list?count=${count}`, {
