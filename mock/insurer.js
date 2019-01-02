@@ -29,17 +29,15 @@ function getInsurers (req, res) {
 }
 
 function postInsurer(req, res) {
-  console.log('postInsurer')
   const { body } = req;
   const { method, id } = body;
   let result = sourceData;
-  console.log('body', body);
 
   switch (method) {
     case 'update':
       result.forEach((item, i) => {
         if (item.id === id) {
-          result[i] = Object.assign(item, body);
+          result[i] = Object.assign(item, body.data);
         }
       });
       break;

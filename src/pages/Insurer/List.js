@@ -71,6 +71,11 @@ class InsurerList extends PureComponent {
       type: 'insurer/save',
       payload: { id, data: current },
     });
+
+    this.setState({ 
+      visible: false,
+    });
+
   };
 
   render() {

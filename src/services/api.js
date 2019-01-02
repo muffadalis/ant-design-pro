@@ -77,7 +77,10 @@ export async function queryInsurerList(params) {
 export async function saveInsurer(params) {
   return request(`/api/insurers`, {
     method: 'POST',
-    body: params
+    body: {
+      ...params,
+      method: 'update',
+    },
   });
 }
 
