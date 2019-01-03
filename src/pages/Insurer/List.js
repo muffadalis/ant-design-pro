@@ -17,12 +17,13 @@ import { Form } from 'react-formio';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './List.less';
+import { stat } from 'fs';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 class InsurerList extends PureComponent {
-  state = { visible: false, done: false };
+  state = { visible: false, done: false, };
 
   formLayout = {
     labelCol: { span: 7 },
@@ -30,11 +31,14 @@ class InsurerList extends PureComponent {
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, showAll } = this.props;
+    console.log('props', this.props),
+    console.log('state', this.state);
+
     dispatch({
       type: 'insurer/fetch',
       payload: {
-        isActive: true,
+        showAll: showAll,
       },
     });
   }
@@ -52,6 +56,16 @@ class InsurerList extends PureComponent {
       current: item,
     });
   };
+
+  handleFilterChange = (e) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'insurer/fetch',
+      payload: {
+        showAll: e.target.value,
+      },
+    });
+  }
 
   handleCancel = () => {
     setTimeout(() => this.addBtn.blur(), 0);
@@ -72,7 +86,7 @@ class InsurerList extends PureComponent {
       payload: { id, data: current },
     });
 
-    this.setState({ 
+    this.setState({
       visible: false,
     });
 
@@ -80,7 +94,7 @@ class InsurerList extends PureComponent {
 
   render() {
     const {
-      insurers: { insurers },
+      insurers: insurers,
       loading,
     } = this.props;
 
@@ -88,11 +102,13 @@ class InsurerList extends PureComponent {
 
     const modalFooter = { okText: 'Save', onOk: this.handleSave, onCancel: this.handleCancel };
 
+    const showAll = this.props.showAll; //this.props.insurers.showAll || 'false';
+
     const extraContent = (
       <div className={styles.extraContent}>
-        <RadioGroup defaultValue="active">
-          <RadioButton value="all">All</RadioButton>
-          <RadioButton value="active">Active</RadioButton>
+        <RadioGroup value={showAll} buttonStyle="solid" onChange={this.handleFilterChange} >
+          <RadioButton value="true">All</RadioButton>
+          <RadioButton value="false">Active</RadioButton>
         </RadioGroup>
         <Button
           type="primary"
@@ -235,8 +251,9 @@ class InsurerList extends PureComponent {
 
 function mapStateToProps(state) {
   return {
-    insurers: state.insurer,
-    loading: state.loading.effects['insurer/fetch']
+    insurers: state.insurer.insurers,
+    loading: state.loading.effects['insurer/fetch'],
+    showAll: state.insurer.showAll || 'false',
   };
 }
 

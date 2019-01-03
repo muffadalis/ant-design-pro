@@ -71,11 +71,11 @@ export async function queryFakeList(params) {
 }
 
 export async function queryInsurerList(params) {
-  return request(`/api/insurers?${stringify(params)}`);
+  return request(`/api/admin/insurer?${stringify(params)}`);
 }
 
 export async function saveInsurer(params) {
-  return request(`/api/insurers`, {
+  return request(`/api/admin/insurer`, {
     method: 'POST',
     body: {
       ...params,

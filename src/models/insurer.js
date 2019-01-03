@@ -10,33 +10,27 @@ export default {
   effects: {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryInsurerList, payload);
+      const insurers = Array.isArray(response) ? response : [];
+
       yield put({
         type: 'queryList',
-        payload: Array.isArray(response) ? response : [],
+        payload: { insurers, showAll: payload.showAll },
       });
     },
-    // *appendFetch({ payload }, { call, put }) {
-    //   const response = yield call(queryInsurerList, payload);
-    //   yield put({
-    //     type: 'appendList',
-    //     payload: Array.isArray(response) ? response : [],
-    //   });
-    // },
+
+    *reload(action, { put, select }) {
+      const page = yield select(state => state.users.page);
+      yield put({ type: 'fetch', payload: { page } });
+    },
 
     *save({ payload }, { call, put }) {
-      let callback;
-      if (payload.id) {
-        callback = saveInsurer;
-      } else {
-        callback = addFakeList;
-      }
-      const response = yield call(callback, payload); // post
-
-      console.log('response', response)
+      const response = yield call(saveInsurer, payload); // post
 
       yield put({
-        type: 'queryList',
-        payload: response,
+        type: 'fetch',
+        payload: {
+          isActive: true,
+        },
       });
     },
   },
@@ -45,7 +39,8 @@ export default {
     queryList(state, action) {
       return {
         ...state,
-        insurers: action.payload,
+        insurers: action.payload.insurers,
+        showAll: action.payload.showAll,
       };
     },
     appendList(state, action) {

@@ -73,10 +73,10 @@ export default {
     '@antv/data-set': 'DataSet',
   },
   proxy: {
-    '/server/api': {
-      target: 'http://demo5773611.mockable.io',
+    '/api': {
+      target: 'http://t2.localtest.me:8001/',
       changeOrigin: true,
-      pathRewrite: { '^/server': '' },
+      //pathRewrite: { '^/server': '' },
     },
   },
   ignoreMomentLocale: true,
